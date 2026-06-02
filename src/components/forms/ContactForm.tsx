@@ -89,7 +89,7 @@ export function ContactForm({
 
   if (status === "success") {
     return (
-      <div className="rounded-lg border bg-card p-8 text-center">
+      <div className="rounded-[var(--radius)] border bg-card p-8 text-center">
         <div className="text-4xl mb-4">✅</div>
         <p className="text-lg font-medium">{successMessage}</p>
       </div>

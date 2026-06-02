@@ -18,12 +18,27 @@ function resolveHref(item: NavItem): string {
 export function Header({ settings, navigation }: { settings: SiteSettings; navigation: Navigation }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isTransparent, setIsTransparent] = useState(false);
   const links: NavItem[] = navigation?.headerLinks || [];
 
-  // Sayfa değiştiğinde menüyü kapat
+  // Track transparent state on homepage scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (pathname === "/") {
+        setIsTransparent(window.scrollY < 80);
+      } else {
+        setIsTransparent(false);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
+
+  // Close mobile menu on navigate
   useEffect(() => {
     if (menuOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMenuOpen(false);
     }
   }, [pathname, menuOpen, setMenuOpen]);
@@ -35,36 +50,57 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-20 items-center justify-between px-4">
-        <Link href="/" className="flex items-center group h-full">
-          <div className="relative flex items-center justify-start transition-all duration-200 group-hover:scale-[1.02] active:scale-95 h-full py-4 max-w-[250px] md:max-w-[450px]">
+    <header className={cn(
+      "z-40 w-full transition-all duration-300",
+      pathname === "/"
+        ? isTransparent
+          ? "absolute top-0 left-0 right-0 bg-transparent border-b border-transparent text-white"
+          : "fixed top-0 left-0 right-0 bg-background/95 border-b border-border/30 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-foreground shadow-sm"
+        : "sticky top-0 bg-background/95 border-b border-border/30 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-foreground"
+    )}>
+      <div className="container mx-auto flex h-24 items-center justify-between px-6 md:px-12">
+        <Link href="/" className="flex items-center group h-full py-2">
+          <div
+            className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
+            style={{ height: "4.5rem", minWidth: "120px", maxWidth: "340px", width: "auto" }}
+          >
             {settings?.logo ? (
               <SanityImage
                 image={settings.logo}
-                width={800}
-                height={200}
+                fill
+                objectFit="contain"
                 fit="max"
-                className="h-full w-auto object-contain object-left"
+                className="!object-left transition-opacity duration-200 group-hover:opacity-75"
+                sizes="340px"
                 priority
+                noBlur
               />
             ) : (
-              <span className="font-bold text-xl tracking-tight leading-none">{settings?.siteName}</span>
+              <span className="font-serif text-xl tracking-wider leading-none uppercase">{settings?.siteName}</span>
             )}
           </div>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-8">
           {links.map((item, i) => (
-            <DesktopNavItem key={i} item={item} active={isActive(item)} />
+            <DesktopNavItem key={i} item={item} active={isActive(item)} isTransparent={isTransparent} />
           ))}
         </nav>
 
         {/* Mobile Controls */}
         <div className="flex items-center gap-2 md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menüyü aç/kapat">
-            {menuOpen ? <RiCloseLine size={20} /> : <RiMenu3Line size={20} />}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setMenuOpen(!menuOpen)} 
+            aria-label="Menüyü aç/kapat"
+            className={cn(
+              "rounded-none hover:bg-transparent",
+              isTransparent ? "text-white hover:text-white/80" : "text-foreground hover:text-foreground/80"
+            )}
+          >
+            {menuOpen ? <RiCloseLine size={24} /> : <RiMenu3Line size={24} />}
           </Button>
         </div>
       </div>
@@ -76,30 +112,31 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t md:hidden overflow-hidden"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="border-t border-border/30 md:hidden overflow-hidden bg-background text-foreground"
           >
-            <nav className="container mx-auto flex flex-col gap-2 px-4 py-6">
+            <nav className="container mx-auto flex flex-col gap-3 px-6 py-8">
               {links.map((item, i) => (
-                <div key={i} className="flex flex-col gap-1">
+                <div key={i} className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <Link
                       href={resolveHref(item)}
                       className={cn(
-                        "text-base font-medium py-2 transition-colors hover:text-primary",
-                        isActive(item) ? "text-primary" : "text-foreground"
+                        "text-xs font-semibold tracking-widest uppercase py-2 transition-colors",
+                        isActive(item) ? "text-primary font-bold" : "text-foreground/85"
                       )}
                     >
                       {item.label}
                     </Link>
                   </div>
                   {item.subLinks && (
-                    <div className="flex flex-col gap-1 pl-4 border-l ml-1 mt-1">
+                    <div className="flex flex-col gap-2 pl-4 border-l border-border/30 ml-1 mt-1">
                       {item.subLinks.map((sub, j) => (
                         <Link
                           key={j}
                           href={resolveHref(sub)}
                           className={cn(
-                            "text-sm font-medium py-2 transition-colors hover:text-primary",
+                            "text-[10px] font-semibold tracking-widest uppercase py-2 transition-colors",
                             isActive(sub) ? "text-primary" : "text-muted-foreground"
                           )}
                         >
@@ -118,11 +155,10 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
   );
 }
 
-function DesktopNavItem({ item, active }: { item: NavItem; active: boolean }) {
+function DesktopNavItem({ item, active, isTransparent }: { item: NavItem; active: boolean; isTransparent: boolean }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Alt menü linklerinden biri aktifse üst menüyü de aktif boyarız
   const isSubActive = item.subLinks?.some(sub => pathname === resolveHref(sub));
   const reallyActive = active || isSubActive;
 
@@ -133,44 +169,58 @@ function DesktopNavItem({ item, active }: { item: NavItem; active: boolean }) {
         target={item.openInNewTab ? "_blank" : undefined}
         rel={item.openInNewTab ? "noopener noreferrer" : undefined}
         className={cn(
-          "text-sm font-medium transition-colors hover:text-primary",
-          reallyActive ? "text-primary font-semibold" : "text-foreground/70"
+          "text-xs font-semibold tracking-widest uppercase transition-colors relative py-2",
+          isTransparent 
+            ? reallyActive ? "text-white font-bold" : "text-white/80 hover:text-white"
+            : reallyActive ? "text-foreground font-bold" : "text-foreground/75 hover:text-foreground"
         )}
       >
         {item.label}
+        {reallyActive && (
+          <motion.span 
+            layoutId="activeIndicator"
+            className={cn(
+              "absolute bottom-0 left-0 right-0 h-[1px]",
+              isTransparent ? "bg-white" : "bg-foreground"
+            )}
+          />
+        )}
       </Link>
     );
   }
 
   return (
     <div 
-      className="relative group"
+      className="relative group py-2"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
       <Link
         href={resolveHref(item)}
         className={cn(
-          "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
-          reallyActive ? "text-primary font-semibold" : "text-foreground/70"
+          "flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase transition-colors",
+          isTransparent 
+            ? reallyActive ? "text-white font-bold" : "text-white/80 hover:text-white"
+            : reallyActive ? "text-foreground font-bold" : "text-foreground/75 hover:text-foreground"
         )}
       >
         {item.label}
         <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <RiArrowDownSLine size={16} />
+          <RiArrowDownSLine size={14} />
         </motion.span>
       </Link>
       
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 5 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 top-full pt-4 min-w-[200px]"
+            className="absolute left-0 top-full pt-3 min-w-[220px]"
           >
-            <div className="bg-popover border rounded-xl shadow-xl p-2 overflow-hidden">
+            {/* Absolute 0px border-radius and Stone drafting line design */}
+            <div className="bg-background border border-border p-2 rounded-none shadow-none">
               {item.subLinks.map((sub, j) => {
                 const subActive = pathname === resolveHref(sub);
                 return (
@@ -180,8 +230,8 @@ function DesktopNavItem({ item, active }: { item: NavItem; active: boolean }) {
                     target={sub.openInNewTab ? "_blank" : undefined}
                     rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
                     className={cn(
-                      "flex items-center px-4 py-2.5 text-sm font-medium rounded-lg hover:bg-muted transition-colors",
-                      subActive ? "text-primary bg-primary/5" : "text-foreground/70"
+                      "flex items-center px-4 py-3 text-[10px] font-semibold tracking-widest uppercase rounded-none transition-colors",
+                      subActive ? "text-primary bg-secondary" : "text-foreground/70 hover:text-foreground hover:bg-secondary/40"
                     )}
                   >
                     {sub.label}

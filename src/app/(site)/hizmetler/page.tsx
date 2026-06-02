@@ -26,41 +26,56 @@ export default async function ServicesHubPage() {
   ]);
 
   return (
-    <div className="flex flex-col gap-12 md:gap-16 pb-16">
+    <div className="flex flex-col gap-0 pb-24 bg-background">
       {/* Page Hero */}
       <PageHero
         title={pageData?.heroTitle || pageData?.pageTitle || "Hizmetlerimiz"}
         subtitle={pageData?.heroSubtitle || pageData?.pageSubtitle || "Size özel sunduğumuz profesyonel çözümler."}
         backgroundImage={pageData?.heroImage}
+        className="[&_h1]:font-serif [&_h1]:uppercase [&_h1]:tracking-widest"
       />
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-12 py-24 relative z-10 space-y-24">
+        
         {services && services.length > 0 ? (
-          <AnimateGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service: Service) => (
+          <AnimateGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+            {services.map((service: Service, index: number) => (
               <Link key={service.slug?.current} href={`/hizmetler/${service.slug?.current}`} className="group block">
-                <article className="border rounded-xl overflow-hidden bg-card hover:shadow-xl transition-all duration-300 h-full flex flex-col hover:-translate-y-1">
+                <article className="bg-transparent overflow-hidden h-full flex flex-col justify-between rounded-none shadow-none border-0 transition-all duration-300 group-hover:-translate-y-1">
+                  
                   {service.mainImage && (
-                    <div className="relative aspect-video overflow-hidden">
+                    <div className="relative aspect-[3/2] overflow-hidden bg-[#efeeeb] border-b border-border/30">
                       <SanityImage
                         image={service.mainImage}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     </div>
                   )}
-                  <div className="p-6 flex-grow flex flex-col justify-between">
-                    <div>
-                      <h2 className="font-bold text-xl mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                  
+                  <div className="pt-6 flex-grow flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[8px] tracking-[0.3em] font-semibold text-[#5f5e5e] uppercase">
+                          Hizmet
+                        </span>
+                        <div className="w-1.5 h-1.5 bg-[#D6CEC3] rounded-none" />
+                        <span className="text-[8px] tracking-[0.3em] font-semibold text-[#5f5e5e] uppercase">
+                          0{index + 1}
+                        </span>
+                      </div>
+                      
+                      <h2 className="font-serif text-xl text-foreground group-hover:text-[#5f5e5e] transition-colors duration-300 leading-snug">
                         {service.title}
                       </h2>
                     </div>
-                    <div className="mt-6">
-                      <span className="text-primary font-semibold text-sm tracking-wider uppercase group-hover:underline underline-offset-4 flex items-center">
+                    
+                    <div className="pt-2 flex items-center gap-2.5">
+                      <span className="text-[10px] font-semibold tracking-[0.2em] text-[#111111] uppercase block group-hover:opacity-80 transition-opacity">
                         Detayları İncele
-                        <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
                       </span>
+                      <span className="text-[#111111] group-hover:translate-x-1 transition-transform duration-300">→</span>
                     </div>
                   </div>
                 </article>
@@ -69,20 +84,34 @@ export default async function ServicesHubPage() {
           </AnimateGroup>
         ) : (
           <FadeIn>
-            <p className="text-muted-foreground text-center py-16">Henüz eklenmiş bir hizmet bulunmuyor.</p>
+            <p className="text-muted-foreground font-sans text-sm text-center py-16">Henüz eklenmiş bir hizmet bulunmuyor.</p>
           </FadeIn>
         )}
 
-        {/* CTA Section */}
+        {/* Dynamic High-Contrast Editorial CTA Section */}
         {pageData?.ctaLabel && pageData?.ctaLink && (
-          <FadeIn className="mt-16 md:mt-24 p-8 md:p-12 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-background border text-center max-w-4xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">Daha Fazla Bilgi mi İstiyorsunuz?</h3>
-            <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-              Size en uygun çözümü bulmak ve profesyonel destek almak için bizimle hemen iletişime geçin.
-            </p>
-            <Button size="lg" render={<Link href={pageData.ctaLink} />}>
-              {pageData.ctaLabel}
-            </Button>
+          <FadeIn className="bg-[#2B2B2B] text-[#F7F5F2] p-12 md:p-20 border border-[#D6CEC3]/10 text-center max-w-4xl mx-auto rounded-none shadow-none space-y-8">
+            <div className="space-y-4">
+              <span className="text-[10px] font-semibold tracking-[0.25em] text-[#D6CEC3]/70 uppercase block">
+                Bize Ulaşın
+              </span>
+              <h3 className="font-serif text-2xl md:text-4xl text-white uppercase tracking-tight">
+                Daha Fazla Bilgi mi İstiyorsunuz?
+              </h3>
+              <p className="font-sans text-xs md:text-sm tracking-wider text-[#F7F5F2]/70 leading-relaxed uppercase max-w-xl mx-auto">
+                Size en uygun mimari çözümleri sunmak ve profesyonel destek almak için ekibimizle hemen iletişime geçin.
+              </p>
+            </div>
+            
+            <div className="pt-2">
+              <Button 
+                size="lg" 
+                render={<Link href={pageData.ctaLink} />}
+                className="bg-[#F7F5F2] hover:bg-white text-black rounded-none border border-transparent px-8 py-4 h-auto text-xs font-semibold tracking-[0.2em] uppercase transition-all duration-300"
+              >
+                {pageData.ctaLabel}
+              </Button>
+            </div>
           </FadeIn>
         )}
       </div>

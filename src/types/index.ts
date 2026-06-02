@@ -136,6 +136,18 @@ export interface AboutPage extends BasePage {
   pageSubtitle?: string;
   body?: any[];
   mainImage?: SanityImage;
+  approachTitle?: string;
+  approachPillars?: { number?: string; title?: string; description?: string; }[];
+  whyUsTitle?: string;
+  whyUsSubtitle?: string;
+  whyUsPoints?: { title?: string; description?: string; }[];
+  visionTitle?: string;
+  visionText?: string;
+  missionTitle?: string;
+  missionText?: string;
+  teamTitle?: string;
+  teamSubtitle?: string;
+  teamMembers?: { name: string; role: string; avatar?: SanityImage; }[];
 }
 
 export interface ContactPage extends BasePage {
@@ -174,8 +186,17 @@ export interface HomePage {
   projectsTitle?: string;
   projectsSubtitle?: string;
   featuredProjects?: Project[];
+  processTitle?: string;
+  processSubtitle?: string;
+  processSteps?: { stepNumber?: string; stepTitle?: string; stepDescription?: string; }[];
+  testimonialTitle?: string;
+  testimonials?: { quote?: string; author?: string; authorRole?: string; }[];
   blogTitle?: string;
   blogSubtitle?: string;
   featuredPosts?: BlogPost[];
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  ctaButtonLabel?: string;
+  ctaButtonLink?: string;
   seo?: SeoSettings;
 }

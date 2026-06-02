@@ -41,12 +41,17 @@ export const homePageQuery = groq`*[_type == "homePage"][0] {
     title, slug,
     mainImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt }
   },
+  processTitle, processSubtitle,
+  processSteps[] { stepNumber, stepTitle, stepDescription },
+  testimonialTitle,
+  testimonials[] { quote, author, authorRole },
   blogTitle, blogSubtitle,
   featuredPosts[]-> {
     title, slug, excerpt, publishedAt,
     category->{ title, slug },
     mainImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt }
   },
+  ctaTitle, ctaSubtitle, ctaButtonLabel, ctaButtonLink,
   seo
 }`;
 
@@ -55,6 +60,16 @@ export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
   heroImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop },
   pageTitle, pageSubtitle, body,
   mainImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop },
+  approachTitle,
+  approachPillars[] { number, title, description },
+  whyUsTitle, whyUsSubtitle,
+  whyUsPoints[] { title, description },
+  visionTitle, visionText, missionTitle, missionText,
+  teamTitle, teamSubtitle,
+  teamMembers[] {
+    name, role,
+    avatar { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop }
+  },
   seo
 }`;
 

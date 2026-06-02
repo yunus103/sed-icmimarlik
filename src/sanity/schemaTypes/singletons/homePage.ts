@@ -9,7 +9,10 @@ export const homePageType = defineType({
     { name: "about", title: "Hakkımızda Önizleme" },
     { name: "services", title: "Hizmetler Önizleme" },
     { name: "projects", title: "Projeler Önizleme" },
+    { name: "process", title: "Nasıl Çalışıyoruz" },
+    { name: "testimonials", title: "Müşteri Yorumları" },
     { name: "blog", title: "Blog Önizleme" },
+    { name: "cta", title: "İletişim / CTA" },
     { name: "seo", title: "SEO Ayarları" },
   ],
   fields: [
@@ -106,6 +109,49 @@ export const homePageType = defineType({
       of: [{ type: "reference", to: [{ type: "project" }] }],
     }),
 
+    // Work Process Group
+    defineField({ name: "processTitle", title: "Süreç Bölüm Başlığı", type: "string", group: "process", initialValue: "Biz Nasıl Çalışıyoruz?" }),
+    defineField({ name: "processSubtitle", title: "Süreç Bölüm Alt Başlığı", type: "text", rows: 2, group: "process" }),
+    defineField({
+      name: "processSteps",
+      title: "Süreç Adımları",
+      type: "array",
+      group: "process",
+      of: [
+        {
+          type: "object",
+          name: "step",
+          title: "Adım",
+          fields: [
+            defineField({ name: "stepNumber", title: "Adım Numarası", type: "string", description: "Örn: 01, 02" }),
+            defineField({ name: "stepTitle", title: "Adım Başlığı", type: "string" }),
+            defineField({ name: "stepDescription", title: "Adım Açıklaması", type: "text", rows: 3 }),
+          ],
+        },
+      ],
+    }),
+
+    // Testimonials Group
+    defineField({ name: "testimonialTitle", title: "Referans Başlığı", type: "string", group: "testimonials", initialValue: "Müşteri Yorumları" }),
+    defineField({
+      name: "testimonials",
+      title: "Müşteri Alıntıları",
+      type: "array",
+      group: "testimonials",
+      of: [
+        {
+          type: "object",
+          name: "testimonial",
+          title: "Referans",
+          fields: [
+            defineField({ name: "quote", title: "Alıntı / Yorum", type: "text", rows: 4 }),
+            defineField({ name: "author", title: "İsim Soyisim", type: "string" }),
+            defineField({ name: "authorRole", title: "Unvan / Şirket", type: "string", description: "Örn: CEO, Loft Project" }),
+          ],
+        },
+      ],
+    }),
+
     // Blog Preview Group
     defineField({ name: "blogTitle", title: "Blog Bölüm Başlığı", type: "string", group: "blog", initialValue: "Son Haberler & Blog" }),
     defineField({ name: "blogSubtitle", title: "Blog Bölüm Alt Başlığı", type: "text", rows: 2, group: "blog" }),
@@ -117,6 +163,12 @@ export const homePageType = defineType({
       group: "blog",
       of: [{ type: "reference", to: [{ type: "blogPost" }] }],
     }),
+
+    // CTA Group
+    defineField({ name: "ctaTitle", title: "CTA Başlık", type: "string", group: "cta", initialValue: "Hayalinizdeki Mekanı Birlikte Tasarlayalım" }),
+    defineField({ name: "ctaSubtitle", title: "CTA Alt Başlık / Çağrı Metni", type: "text", rows: 2, group: "cta" }),
+    defineField({ name: "ctaButtonLabel", title: "Buton Metni", type: "string", group: "cta", initialValue: "İletişime Geçin" }),
+    defineField({ name: "ctaButtonLink", title: "Buton Linki", type: "string", group: "cta", initialValue: "/iletisim" }),
 
     // SEO Group
     defineField({ name: "seo", title: "SEO", type: "seo", group: "seo" }),
