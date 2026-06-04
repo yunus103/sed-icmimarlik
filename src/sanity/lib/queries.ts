@@ -134,16 +134,21 @@ export const blogRelatedPostsQuery = groq`*[_type == "blogPost" && category._ref
 // ─── Hizmetler ─────────────────────────────────────────────────────────────────
 
 export const serviceListQuery = groq`*[_type == "service"] | order(_createdAt asc) {
-  title, slug,
+  title, slug, category,
   mainImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop }
 }`;
 
 export const serviceBySlugQuery = groq`*[_type == "service" && slug.current == $slug][0] {
-  title, slug,
+  title, slug, category,
   mainImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop },
   body[] {
     ...,
     _type == "image" => { asset->{ _id, url, metadata { lqip, dimensions } }, alt, alignment, size, hotspot, crop }
+  },
+  subServices[] {
+    title,
+    description,
+    image { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop }
   },
   seo
 }`;

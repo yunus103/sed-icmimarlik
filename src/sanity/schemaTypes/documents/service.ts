@@ -18,6 +18,20 @@ export const serviceType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "category",
+      title: "Kategori",
+      type: "string",
+      options: {
+        list: [
+          { title: "Tasarım & Projelendirme", value: "design" },
+          { title: "Uygulama & İnce İşler", value: "execution" },
+        ],
+        layout: "radio",
+      },
+      validation: (Rule) => Rule.required(),
+      initialValue: "design",
+    }),
+    defineField({
       name: "mainImage",
       title: "Ana Görsel",
       type: "image",
@@ -62,6 +76,13 @@ export const serviceType = defineType({
         },
         { type: "customHtml" },
       ],
+    }),
+    defineField({
+      name: "subServices",
+      title: "Alt Bölümler / Detaylar",
+      type: "array",
+      of: [{ type: "subService" }],
+      description: "Sayfa detayında listelenecek alt başlıklar (örn. Salon, Mutfak veya Peyzaj, Havuz vb.)",
     }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],

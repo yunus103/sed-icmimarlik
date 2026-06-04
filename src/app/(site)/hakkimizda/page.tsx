@@ -9,7 +9,11 @@ import { PageHero } from "@/components/layout/PageHero";
 import { AboutPage as AboutPageType } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await client.fetch<AboutPageType>(aboutPageQuery, {}, { next: { tags: ["about"] } });
+  const data = await client.fetch<AboutPageType>(
+    aboutPageQuery,
+    {},
+    { next: { tags: ["about"] } },
+  );
   return buildMetadata({
     title: data?.heroTitle || data?.pageTitle || "Hakkımızda",
     canonicalPath: "/hakkimizda",
@@ -18,7 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const data = await client.fetch<AboutPageType>(aboutPageQuery, {}, { next: { tags: ["about"] } });
+  const data = await client.fetch<AboutPageType>(
+    aboutPageQuery,
+    {},
+    { next: { tags: ["about"] } },
+  );
 
   return (
     <div className="flex flex-col gap-0 pb-24 bg-background">
@@ -34,13 +42,10 @@ export default async function AboutPage() {
       <section className="py-24 md:py-32 relative border-b border-border/30">
         <div className="container mx-auto px-6 md:px-12 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-            
             {/* Left Narrative */}
-            <div className="lg:col-span-7 space-y-8">
+            <div className="lg:col-span-6 space-y-8">
               <FadeIn direction="up" duration={0.6}>
-                <span className="text-[10px] md:text-xs font-semibold tracking-[0.25em] text-[#5f5e5e] uppercase block">
-                  Marka Hikayesi
-                </span>
+                {" "}
                 <h2 className="font-serif text-3xl md:text-5xl tracking-tight leading-tight mt-3 text-foreground uppercase">
                   {data?.pageTitle || "Biz Kimiz?"}
                 </h2>
@@ -53,17 +58,24 @@ export default async function AboutPage() {
 
               <div className="border-l border-[#D6CEC3] pl-6 md:pl-8 space-y-6">
                 <FadeIn delay={0.2} duration={0.6}>
-                  <RichText value={data?.body} className="text-foreground/80 leading-relaxed font-sans text-sm md:text-base" />
+                  <RichText
+                    value={data?.body}
+                    className="text-foreground/80 leading-relaxed font-sans text-sm md:text-base"
+                  />
                 </FadeIn>
               </div>
             </div>
 
             {/* Right Architectural Image */}
             {data?.mainImage && (
-              <div className="lg:col-span-5 relative lg:sticky lg:top-28">
-                <FadeIn direction="left" delay={0.35} className="relative w-full">
+              <div className="lg:col-span-6 relative lg:sticky lg:top-28">
+                <FadeIn
+                  direction="left"
+                  delay={0.35}
+                  className="relative w-full"
+                >
                   <div className="absolute -bottom-4 -left-4 w-full h-full border border-[#D6CEC3] pointer-events-none z-0" />
-                  <div className="relative aspect-[3/4] overflow-hidden bg-secondary z-10 rounded-none shadow-none">
+                  <div className="relative aspect-[4/3] md:aspect-[3/2] overflow-hidden bg-secondary z-10 rounded-none shadow-none">
                     <SanityImage
                       image={data.mainImage}
                       fill
@@ -75,7 +87,6 @@ export default async function AboutPage() {
                 </FadeIn>
               </div>
             )}
-
           </div>
         </div>
         <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />
@@ -86,7 +97,6 @@ export default async function AboutPage() {
       {data?.approachPillars && data.approachPillars.length > 0 && (
         <section className="py-24 md:py-32 bg-[#efeeeb] relative border-b border-border/30">
           <div className="container mx-auto px-6 md:px-12 relative z-10">
-            
             {/* Title */}
             <div className="max-w-4xl mb-20 space-y-4">
               <FadeIn direction="up" duration={0.6}>
@@ -102,7 +112,12 @@ export default async function AboutPage() {
             {/* Pillars Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
               {data.approachPillars.map((pillar, i) => (
-                <FadeIn key={i} delay={i * 0.1} duration={0.6} className="space-y-4 group">
+                <FadeIn
+                  key={i}
+                  delay={i * 0.1}
+                  duration={0.6}
+                  className="space-y-4 group"
+                >
                   <span className="font-serif text-4xl md:text-5xl italic tracking-tight text-[#D6CEC3] group-hover:text-foreground transition-colors duration-500 block">
                     {pillar.number || `0${i + 1}`}
                   </span>
@@ -116,7 +131,6 @@ export default async function AboutPage() {
                 </FadeIn>
               ))}
             </div>
-
           </div>
           <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />
           <div className="absolute right-6 md:right-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />
@@ -128,7 +142,6 @@ export default async function AboutPage() {
         <section className="py-24 md:py-32 relative border-b border-border/30">
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-              
               {/* Sidebar Header */}
               <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-28">
                 <FadeIn direction="up" duration={0.6}>
@@ -150,7 +163,12 @@ export default async function AboutPage() {
               <div className="lg:col-span-8 space-y-8 border-l border-[#D6CEC3]/50 pl-6 md:pl-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                   {data.whyUsPoints.map((point, i) => (
-                    <FadeIn key={i} delay={i * 0.08} duration={0.5} className="space-y-3">
+                    <FadeIn
+                      key={i}
+                      delay={i * 0.08}
+                      duration={0.5}
+                      className="space-y-3"
+                    >
                       <h3 className="font-serif text-lg text-foreground flex items-center gap-3">
                         <span className="w-1.5 h-1.5 bg-[#111111] rounded-none inline-block shrink-0" />
                         {point.title}
@@ -162,7 +180,6 @@ export default async function AboutPage() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
           <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />
@@ -175,7 +192,6 @@ export default async function AboutPage() {
         <section className="py-24 md:py-32 bg-[#efeeeb] relative border-b border-border/30">
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 relative">
-              
               {/* Vision Block */}
               {data?.visionText && (
                 <FadeIn direction="up" duration={0.6} className="space-y-6">
@@ -193,7 +209,12 @@ export default async function AboutPage() {
 
               {/* Mission Block */}
               {data?.missionText && (
-                <FadeIn direction="up" duration={0.6} delay={0.15} className="space-y-6">
+                <FadeIn
+                  direction="up"
+                  duration={0.6}
+                  delay={0.15}
+                  className="space-y-6"
+                >
                   <span className="text-[10px] md:text-xs font-semibold tracking-[0.25em] text-[#5f5e5e] uppercase block">
                     {data?.missionTitle || "Misyonumuz"}
                   </span>
@@ -202,7 +223,6 @@ export default async function AboutPage() {
                   </p>
                 </FadeIn>
               )}
-
             </div>
           </div>
           <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />
@@ -214,7 +234,6 @@ export default async function AboutPage() {
       {data?.teamMembers && data.teamMembers.length > 0 && (
         <section className="py-24 md:py-32 relative">
           <div className="container mx-auto px-6 md:px-12 relative z-10">
-            
             {/* Header */}
             <div className="max-w-4xl mb-20 space-y-4">
               <FadeIn direction="up" duration={0.6}>
@@ -233,39 +252,50 @@ export default async function AboutPage() {
             </div>
 
             {/* Team Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-              {data.teamMembers.map((member, i) => (
-                <FadeIn key={i} delay={i * 0.08} duration={0.6} className="space-y-4 group">
-                  {/* Portrait Box with offset frame on hover */}
-                  <div className="relative aspect-[3/4] overflow-hidden bg-[#efeeeb] rounded-none shadow-none">
-                    <div className="absolute inset-0 border border-transparent group-hover:border-black/10 z-20 transition-all pointer-events-none" />
-                    {member.avatar ? (
-                      <SanityImage
-                        image={member.avatar}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 25vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center font-serif text-3xl text-stone-300">
-                        {member.name.split(" ").map(w => w[0]).join("")}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {data.teamMembers.map((member, i) => {
+                const initials = member.name
+                  ?.split(" ")
+                  .map((w) => w[0])
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2);
+
+                return (
+                  <FadeIn
+                    key={i}
+                    delay={i * 0.08}
+                    duration={0.6}
+                    className="group"
+                  >
+                    <div className="border border-[#D6CEC3]/40 p-8 relative bg-[#efeeeb]/20 hover:bg-[#efeeeb]/40 hover:border-foreground transition-all duration-500 min-h-[180px] flex flex-col justify-between">
+                      {/* Top Accent: Number and watermark initials */}
+                      <div className="flex justify-between items-start">
+                        <span className="font-serif text-xs italic text-[#5f5e5e]/80">
+                          {i < 9 ? `0${i + 1}` : i + 1}
+                        </span>
+                        {initials && (
+                          <span className="font-serif text-3xl font-light text-[#D6CEC3]/50 group-hover:text-foreground/15 transition-colors duration-500 select-none">
+                            {initials}
+                          </span>
+                        )}
                       </div>
-                    )}
-                  </div>
 
-                  {/* Metadata Info */}
-                  <div className="space-y-0.5">
-                    <h3 className="font-serif text-base text-foreground leading-snug">
-                      {member.name}
-                    </h3>
-                    <span className="text-[9px] tracking-[0.25em] font-semibold text-[#5f5e5e] uppercase block">
-                      {member.role}
-                    </span>
-                  </div>
-                </FadeIn>
-              ))}
+                      {/* Info / Metadata */}
+                      <div className="space-y-2 mt-8">
+                        <div className="h-[1px] w-8 bg-[#D6CEC3] group-hover:w-16 transition-all duration-500" />
+                        <h3 className="font-serif text-lg md:text-xl text-foreground leading-snug tracking-tight">
+                          {member.name}
+                        </h3>
+                        <span className="text-[10px] tracking-[0.25em] font-semibold text-[#5f5e5e] uppercase block">
+                          {member.role}
+                        </span>
+                      </div>
+                    </div>
+                  </FadeIn>
+                );
+              })}
             </div>
-
           </div>
           <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />
           <div className="absolute right-6 md:right-12 top-0 bottom-0 w-[1px] bg-border/20 pointer-events-none z-0" />

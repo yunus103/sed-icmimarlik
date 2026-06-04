@@ -1,6 +1,7 @@
 import { seoType } from "./objects/seo";
 import { socialLinkType } from "./objects/socialLink";
 import { customHtmlType } from "./objects/customHtml";
+import { subServiceType } from "./objects/subService";
 import { siteSettingsType } from "./singletons/siteSettings";
 import { navigationType } from "./singletons/navigation";
 import { homePageType } from "./singletons/homePage";
@@ -20,6 +21,7 @@ export const schemaTypes = [
   seoType,
   socialLinkType,
   customHtmlType,
+  subServiceType,
   // Singletons
   siteSettingsType,
   navigationType,

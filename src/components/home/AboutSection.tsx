@@ -32,8 +32,8 @@ export function AboutSection({
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           
-          {/* Left Column: Typography (7 Columns) */}
-          <div className="lg:col-span-7 space-y-8">
+          {/* Left Column: Typography (6 Columns) */}
+          <div className="lg:col-span-6 space-y-8">
             <FadeIn direction="up" duration={0.6}>
               <span className="text-[10px] md:text-xs font-semibold tracking-[0.25em] text-[#5f5e5e] uppercase block">
                 {displayTitle}
@@ -65,13 +65,13 @@ export function AboutSection({
             </div>
           </div>
 
-          {/* Right Column: Architectural Image (5 Columns) */}
+          {/* Right Column: Architectural Image (6 Columns) */}
           {image && (
-            <div className="lg:col-span-5 relative">
+            <div className="lg:col-span-6 relative">
               <FadeIn direction="left" delay={0.4} className="relative w-full">
                 {/* Asymmetric offset framing border */}
                 <div className="absolute -bottom-4 -left-4 w-full h-full border border-[#D6CEC3] pointer-events-none z-0" />
-                <div className="relative aspect-[4/3] sm:aspect-[3/2] lg:aspect-[3/4] overflow-hidden bg-secondary z-10 rounded-none shadow-none">
+                <div className="relative aspect-[4/3] sm:aspect-[3/2] lg:aspect-[3/2] overflow-hidden bg-secondary z-10 rounded-none shadow-none">
                   <SanityImage
                     image={image}
                     fill

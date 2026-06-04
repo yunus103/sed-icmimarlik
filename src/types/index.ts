@@ -86,14 +86,23 @@ export interface Navigation {
   footerLinks?: NavItem[];
 }
 
+export interface SubService {
+  title: string;
+  description?: string;
+  image?: SanityImage;
+}
+
 export interface Service {
   _id?: string;
   _createdAt?: string;
   _updatedAt?: string;
   title: string;
   slug: SanitySlug;
+  category?: "design" | "execution";
   mainImage?: SanityImage;
   body?: any[];
+  subServices?: SubService[];
+  seo?: SeoSettings;
 }
 
 export interface Project {

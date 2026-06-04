@@ -103,7 +103,7 @@ export const aboutPageType = defineType({
           title: "Üye",
           fields: [
             defineField({ name: "name", title: "İsim Soyisim", type: "string", validation: (Rule) => Rule.required() }),
-            defineField({ name: "role", title: "Rolü / Unvanı", type: "string", validation: (Rule) => Rule.required() }),
+            defineField({ name: "role", title: "Rolü / Unvanı", type: "string"}),
             defineField({
               name: "avatar",
               title: "Fotoğraf",
