@@ -11,6 +11,14 @@ type BreadcrumbItem = {
   active?: boolean;
 };
 
+const turkishLabels: Record<string, string> = {
+  hizmetler: "Hizmetler",
+  blog: "Blog",
+  projeler: "Projeler",
+  iletisim: "İletişim",
+  hakkimizda: "Hakkımızda",
+};
+
 export function Breadcrumbs({ items, className = "" }: { items?: BreadcrumbItem[], className?: string }) {
   const pathname = usePathname();
   
@@ -19,8 +27,9 @@ export function Breadcrumbs({ items, className = "" }: { items?: BreadcrumbItem[
     const paths = pathname.split("/").filter((path) => path !== "");
     const breadcrumbs: BreadcrumbItem[] = paths.map((path, index) => {
       const href = `/${paths.slice(0, index + 1).join("/")}`;
-      // Slug temizliği (tireleri boşluk yap, baş harfleri büyüt)
-      const label = path
+      const cleanPath = path.toLowerCase();
+      // Eğer sözlükte varsa oradan al, yoksa slug temizliği yap
+      const label = turkishLabels[cleanPath] || path
         .replace(/-/g, " ")
         .replace(/\b\w/g, (l) => l.toUpperCase());
         

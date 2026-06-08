@@ -8,6 +8,7 @@ interface PageHeroProps {
   subtitle?: string;
   backgroundImage?: SanityImageType;
   className?: string;
+  breadcrumbs?: { label: string; href: string; active?: boolean }[];
 }
 
 export function PageHero({
@@ -15,6 +16,7 @@ export function PageHero({
   subtitle,
   backgroundImage,
   className = "",
+  breadcrumbs,
 }: PageHeroProps) {
   return (
     <section className={`relative overflow-hidden bg-muted py-20 md:py-28 ${className}`}>
@@ -40,7 +42,7 @@ export function PageHero({
         <div className="max-w-3xl">
           <FadeIn direction="up" duration={0.6}>
             {/* Breadcrumbs */}
-            <Breadcrumbs className={`mb-6 ${backgroundImage?.asset ? "text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white" : ""}`} />
+            <Breadcrumbs items={breadcrumbs} className={`mb-6 ${backgroundImage?.asset ? "text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white" : ""}`} />
 
             <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 ${backgroundImage?.asset ? "text-white" : "text-foreground"}`}>
               {title}

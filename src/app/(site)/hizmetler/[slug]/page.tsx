@@ -55,6 +55,10 @@ export default async function ServicePage({ params }: Props) {
         }
         backgroundImage={service.mainImage}
         className="[&_h1]:font-serif [&_h1]:uppercase [&_h1]:tracking-widest"
+        breadcrumbs={[
+          { label: "Hizmetler", href: "/hizmetler" },
+          { label: service.title, href: `/hizmetler/${slug}`, active: true }
+        ]}
       />
 
       <div className="container mx-auto px-6 md:px-12 py-20 relative z-10 space-y-24">
