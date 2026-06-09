@@ -185,7 +185,7 @@ export function ContactForm({
         </p>
       )}
 
-      <Button type="submit" disabled={status === "loading"} className="w-full sm:w-auto">
+      <Button type="submit" disabled={status === "loading"} className="w-full sm:w-auto cursor-pointer">
         {status === "loading" ? "Gönderiliyor..." : "Gönder"}
       </Button>
     </form>

@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RiSearchLine } from "react-icons/ri";
+
+export const metadata: Metadata = {
+  title: "Sayfa Bulunamadı | Sed İç Mimarlık",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
   return (

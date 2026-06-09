@@ -72,7 +72,7 @@ export default async function ContactPage() {
                   {contact?.email && (
                     <a
                       href={`mailto:${contact.email}`}
-                      className="flex items-center gap-4 text-xs sm:text-sm tracking-wider text-foreground/80 hover:text-foreground transition-colors uppercase font-medium"
+                      className="flex items-center gap-4 text-xs sm:text-sm tracking-wider text-foreground/80 hover:text-foreground transition-colors font-medium"
                     >
                       <RiMailLine size={20} className="text-[#5f5e5e]" />
                       <span>{contact.email}</span>
@@ -100,15 +100,6 @@ export default async function ContactPage() {
                 </FadeIn>
               </div>
 
-              {/* Embedded Google Maps Iframing */}
-              {contact?.mapIframe && (
-                <FadeIn delay={0.35} duration={0.6}>
-                  <div 
-                    className="w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[4/3] bg-[#efeeeb] border border-border/40 rounded-none overflow-hidden [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
-                    dangerouslySetInnerHTML={{ __html: contact.mapIframe }}
-                  />
-                </FadeIn>
-              )}
             </div>
 
             {/* Right Column: Contact Form (7 Columns) */}
@@ -122,6 +113,16 @@ export default async function ContactPage() {
             </div>
 
           </div>
+
+          {/* Embedded Google Maps Iframing - Full Container Width */}
+          {contact?.mapIframe && (
+            <FadeIn delay={0.3} duration={0.6} className="mt-16 md:mt-24">
+              <div 
+                className="w-full aspect-[21/9] min-h-[350px] max-h-[500px] bg-[#efeeeb] border border-border/20 overflow-hidden [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:border-0"
+                dangerouslySetInnerHTML={{ __html: contact.mapIframe }}
+              />
+            </FadeIn>
+          )}
         </div>
 
         {/* Editorial geometric lines */}

@@ -60,7 +60,7 @@ export function CtaSection({
           <div className="lg:col-span-5 relative border-l border-[#D6CEC3]/20 pl-8 lg:pl-16 py-4 space-y-8">
             <FadeIn direction="left" delay={0.3} className="space-y-6">
               <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D6CEC3]">
-                Stüdyo Koordinatları
+                İletişim Bilgileri
               </h3>
               
               <div className="space-y-4 pt-2">
