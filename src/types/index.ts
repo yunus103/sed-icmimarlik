@@ -179,6 +179,7 @@ export type ServicesPage = InnerPageWithCta;
 export type ProjectsPage = InnerPageWithCta;
 
 export interface HomePage {
+  heroOverline?: string;
   heroTitle: string;
   heroSubtitle?: string;
   heroImage?: SanityImage;

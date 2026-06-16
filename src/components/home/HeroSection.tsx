@@ -7,6 +7,7 @@ import { SanityImage as SanityImageType, CtaLink } from "@/types";
 interface HeroSectionProps {
   data: {
     heroImage?: SanityImageType;
+    heroOverline?: string;
     heroTitle?: string;
     heroSubtitle?: string;
     heroCtaLabel?: string;
@@ -58,12 +59,9 @@ export function HeroSection({ data }: HeroSectionProps) {
           <FadeIn direction="up" duration={0.6} delay={0.1}>
             <div className="flex items-center gap-4">
               <span className="text-[10px] md:text-xs font-semibold tracking-[0.3em] text-[#D6CEC3] uppercase">
-                Sed İç Mimarlık
+                {data?.heroOverline || "İÇ MİMARLIK, PROJE VE UYGULAMA HİZMETLERİ"}
               </span>
               <div className="h-[1px] w-12 bg-[#D6CEC3]/30" />
-              <span className="text-[10px] md:text-xs font-semibold tracking-[0.3em] text-[#D6CEC3] uppercase">
-                Studio
-              </span>
             </div>
           </FadeIn>
 

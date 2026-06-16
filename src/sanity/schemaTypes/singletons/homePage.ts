@@ -18,6 +18,13 @@ export const homePageType = defineType({
   fields: [
     // Hero Group
     defineField({ name: "heroTitle", title: "Hero Başlık", type: "string", group: "hero", validation: (Rule) => Rule.required() }),
+    defineField({
+      name: "heroOverline",
+      title: "Hero Üst Başlık (Küçük)",
+      type: "string",
+      group: "hero",
+      initialValue: "İÇ MİMARLIK, PROJE VE UYGULAMA HİZMETLERİ",
+    }),
     defineField({ name: "heroSubtitle", title: "Hero Alt Başlık", type: "text", rows: 3, group: "hero" }),
     defineField({
       name: "heroImage",

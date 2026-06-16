@@ -21,7 +21,7 @@ export const layoutQuery = groq`{
 // ─── Sayfalar ──────────────────────────────────────────────────────────────────
 
 export const homePageQuery = groq`*[_type == "homePage"][0] {
-  heroTitle, heroSubtitle, heroCtaLabel,
+  heroOverline, heroTitle, heroSubtitle, heroCtaLabel,
   heroCtaLink {
     linkType,
     manual,
