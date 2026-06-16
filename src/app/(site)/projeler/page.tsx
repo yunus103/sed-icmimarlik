@@ -134,7 +134,7 @@ export default async function ProjectsHubPage() {
               <Button 
                 size="lg" 
                 render={<Link href={pageData.ctaLink} />}
-                className="bg-[#F7F5F2] hover:bg-white text-black rounded-none border border-transparent px-8 py-4 h-auto text-xs font-semibold tracking-[0.2em] uppercase transition-all duration-300"
+                className="bg-[#F7F5F2] hover:bg-white text-black hover:text-black rounded-none border border-transparent px-8 py-4 h-auto text-xs font-semibold tracking-[0.2em] uppercase transition-all duration-300"
               >
                 {pageData.ctaLabel}
               </Button>

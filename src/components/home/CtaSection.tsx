@@ -49,7 +49,7 @@ export function CtaSection({
               <Button 
                 size="lg" 
                 render={<Link href={displayButtonLink} />}
-                className="bg-[#F7F5F2] hover:bg-white text-black rounded-none border border-transparent px-8 py-5 h-auto text-xs font-semibold tracking-[0.2em] uppercase transition-all duration-300 active:translate-y-px"
+                className="bg-[#F7F5F2] hover:bg-white text-black hover:text-black rounded-none border border-transparent px-8 py-5 h-auto text-xs font-semibold tracking-[0.2em] uppercase transition-all duration-300 active:translate-y-px"
               >
                 {displayButtonLabel}
               </Button>
