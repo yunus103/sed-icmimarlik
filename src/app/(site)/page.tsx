@@ -74,11 +74,13 @@ export default async function HomePage() {
       />
 
       {/* 4. Öne Çıkan Projeler */}
-      <ProjectsSection
-        title={data?.projectsTitle}
-        subtitle={data?.projectsSubtitle}
-        projects={projectsToDisplay}
-      />
+      {settings?.enableProjects !== false && (
+        <ProjectsSection
+          title={data?.projectsTitle}
+          subtitle={data?.projectsSubtitle}
+          projects={projectsToDisplay}
+        />
+      )}
 
       {/* 5. Biz Nasıl Çalışıyoruz (Süreç) */}
       <ProcessSection

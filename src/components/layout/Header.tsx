@@ -6,10 +6,45 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { SanityImage } from "@/components/ui/SanityImage";
 import { Button } from "@/components/ui/button";
-import { RiMenu3Line, RiCloseLine, RiArrowDownSLine } from "react-icons/ri";
+import { RiMenu3Line, RiCloseLine, RiArrowDownSLine, RiMailLine, RiPhoneLine } from "react-icons/ri";
+import {
+  FaInstagram,
+  FaFacebook,
+  FaLinkedin,
+  FaYoutube,
+  FaTiktok,
+  FaPinterest,
+  FaWhatsapp,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 
-import { SiteSettings, Navigation, NavItem } from "@/types";
+import { SiteSettings, Navigation, NavItem, SocialLink } from "@/types";
+
+const socialIconMap: Record<string, React.ElementType> = {
+  instagram: FaInstagram,
+  facebook: FaFacebook,
+  twitter: FaXTwitter,
+  linkedin: FaLinkedin,
+  youtube: FaYoutube,
+  tiktok: FaTiktok,
+  pinterest: FaPinterest,
+  whatsapp: FaWhatsapp,
+};
+
+const listVariants = {
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+  hidden: {},
+} as const;
+
+const itemVariants = {
+  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  hidden: { opacity: 0, x: -20 },
+} as const;
 
 function resolveHref(item: NavItem): string {
   return item.href || "#";
@@ -19,7 +54,9 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isTransparent, setIsTransparent] = useState(false);
-  const links: NavItem[] = navigation?.headerLinks || [];
+  const links: NavItem[] = (navigation?.headerLinks || []).filter(
+    item => settings?.enableProjects !== false || resolveHref(item) !== "/projeler"
+  );
 
   // Track transparent state on homepage scroll
   useEffect(() => {
@@ -36,18 +73,33 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Close mobile menu on navigate
+  // Close mobile menu on navigate (fixed dependency array to prevent immediate close loop bug)
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  // Prevent background scroll when mobile menu is open
   useEffect(() => {
     if (menuOpen) {
-      setMenuOpen(false);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
     }
-  }, [pathname, menuOpen, setMenuOpen]);
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const isActive = (item: NavItem) => {
     const href = resolveHref(item);
     if (href === "/" && pathname !== "/") return false;
     return pathname.startsWith(href);
   };
+
+  const logoAspectRatio = settings?.logo?.asset?.metadata?.dimensions?.aspectRatio;
+  const logoWidthStyles = logoAspectRatio 
+    ? { width: `${4.5 * logoAspectRatio}rem` } 
+    : { width: "160px" };
 
   return (
     <header className={cn(
@@ -62,7 +114,7 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
         <Link href="/" className="flex items-center group h-full py-2">
           <div
             className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
-            style={{ height: "4.5rem", minWidth: "120px", maxWidth: "340px", width: "auto" }}
+            style={{ height: "4.5rem", minWidth: "120px", maxWidth: "340px", ...logoWidthStyles }}
           >
             {settings?.logo ? (
               <SanityImage
@@ -109,45 +161,139 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="border-t border-border/30 md:hidden overflow-hidden bg-background text-foreground"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 w-screen h-screen flex flex-col justify-between bg-background text-foreground md:hidden overflow-y-auto"
           >
-            <nav className="container mx-auto flex flex-col gap-3 px-6 py-8">
-              {links.map((item, i) => (
-                <div key={i} className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
+            {/* Top Bar (matches desktop header layout for alignment consistency) */}
+            <div className="container mx-auto flex h-24 items-center justify-between px-6">
+              <Link href="/" className="flex items-center group h-full py-2" onClick={() => setMenuOpen(false)}>
+                <div
+                  className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
+                  style={{ height: "4.5rem", minWidth: "120px", maxWidth: "340px", ...logoWidthStyles }}
+                >
+                  {settings?.logo ? (
+                    <SanityImage
+                      image={settings.logo}
+                      fill
+                      objectFit="contain"
+                      fit="max"
+                      className="!object-left transition-opacity duration-200 group-hover:opacity-75"
+                      sizes="340px"
+                      priority
+                      noBlur
+                    />
+                  ) : (
+                    <span className="font-serif text-xl tracking-wider leading-none uppercase text-foreground">
+                      {settings?.siteName}
+                    </span>
+                  )}
+                </div>
+              </Link>
+
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setMenuOpen(false)} 
+                aria-label="Menüyü kapat"
+                className="rounded-none hover:bg-transparent text-foreground hover:text-foreground/80"
+              >
+                <RiCloseLine size={24} />
+              </Button>
+            </div>
+
+            {/* Central Navigation Items */}
+            <div className="flex-1 flex flex-col justify-center items-center px-6 py-12">
+              <motion.nav 
+                variants={listVariants} 
+                initial="hidden" 
+                animate="visible" 
+                className="flex flex-col gap-6 text-left items-start w-full max-w-[280px]"
+              >
+                {links.map((item, i) => (
+                  <motion.div key={i} variants={itemVariants} className="w-full flex flex-col gap-2">
                     <Link
                       href={resolveHref(item)}
+                      target={item.openInNewTab ? "_blank" : undefined}
+                      rel={item.openInNewTab ? "noopener noreferrer" : undefined}
+                      onClick={() => setMenuOpen(false)}
                       className={cn(
-                        "text-xs font-semibold tracking-widest uppercase py-2 transition-colors",
-                        isActive(item) ? "text-primary font-bold" : "text-foreground/85"
+                        "text-2xl font-serif tracking-wider uppercase py-1.5 transition-colors block",
+                        isActive(item) ? "text-primary font-bold" : "text-foreground/80 hover:text-foreground"
                       )}
                     >
                       {item.label}
                     </Link>
-                  </div>
-                  {item.subLinks && (
-                    <div className="flex flex-col gap-2 pl-4 border-l border-border/30 ml-1 mt-1">
-                      {item.subLinks.map((sub, j) => (
-                        <Link
-                          key={j}
-                          href={resolveHref(sub)}
-                          className={cn(
-                            "text-[10px] font-semibold tracking-widest uppercase py-2 transition-colors",
-                            isActive(sub) ? "text-primary" : "text-muted-foreground"
-                          )}
+                    
+                    {item.subLinks && item.subLinks.length > 0 && (
+                      <div className="flex flex-col gap-2.5 pl-4 border-l border-border/30 ml-2 mt-1">
+                        {item.subLinks.map((sub, j) => (
+                          <Link
+                            key={j}
+                            href={resolveHref(sub)}
+                            target={sub.openInNewTab ? "_blank" : undefined}
+                            rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
+                            onClick={() => setMenuOpen(false)}
+                            className={cn(
+                              "text-xs font-sans font-semibold tracking-widest uppercase py-1 transition-colors block",
+                              isActive(sub) ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground"
+                            )}
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </motion.nav>
+            </div>
+
+            {/* Bottom Contact and Social Panel */}
+            <div className="w-full border-t border-border/20 py-8 px-6 flex flex-col items-center gap-5 text-center bg-background/40">
+              <div className="flex flex-col sm:flex-row gap-3 items-center justify-center text-xs tracking-widest text-muted-foreground uppercase font-sans">
+                {settings?.contactInfo?.phone && (
+                  <a href={`tel:${settings.contactInfo.phone}`} className="hover:text-foreground transition-colors flex items-center gap-2">
+                    <RiPhoneLine size={14} />
+                    <span>{settings.contactInfo.phone}</span>
+                  </a>
+                )}
+                {settings?.contactInfo?.phone && settings?.contactInfo?.email && (
+                  <span className="hidden sm:inline text-border/60">|</span>
+                )}
+                {settings?.contactInfo?.email && (
+                  <a href={`mailto:${settings.contactInfo.email}`} className="hover:text-foreground transition-colors flex items-center gap-2 lowercase tracking-wider">
+                    <RiMailLine size={14} />
+                    <span>{settings.contactInfo.email}</span>
+                  </a>
+                )}
+              </div>
+
+              {settings?.socialLinks && settings.socialLinks.filter((s: SocialLink) => s.url).length > 0 && (
+                <div className="flex justify-center gap-3">
+                  {settings.socialLinks
+                    .filter((s: SocialLink) => s.url)
+                    .map((social, i) => {
+                      const Icon = socialIconMap[social.platform];
+                      if (!Icon) return null;
+                      return (
+                        <a
+                          key={i}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={social.platform}
+                          className="flex h-9 w-9 items-center justify-center border border-border/40 hover:border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background rounded-none transition-all duration-300"
                         >
-                          {sub.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                          <Icon size={14} />
+                        </a>
+                      );
+                    })}
                 </div>
-              ))}
-            </nav>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -8,6 +8,13 @@ export const siteSettingsType = defineType({
     defineField({ name: "siteName", title: "Site Adı", type: "string", validation: (Rule) => Rule.required() }),
     defineField({ name: "siteTagline", title: "Slogan", type: "string" }),
     defineField({
+      name: "enableProjects",
+      title: "Projeler Modülünü Aktif Et",
+      type: "boolean",
+      description: "Müşterinin yeterli projesi yoksa bu seçeneği kapatarak Projeler sayfasını ve anasayfadaki Projeler bölümünü geçici olarak gizleyebilirsiniz.",
+      initialValue: true,
+    }),
+    defineField({
       name: "logo",
       title: "Logo",
       type: "image",

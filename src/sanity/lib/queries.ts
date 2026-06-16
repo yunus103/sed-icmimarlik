@@ -4,7 +4,7 @@ import { groq } from "next-sanity";
 // Her sayfada bir kez çekilir — header, footer, global ayarlar
 export const layoutQuery = groq`{
   "settings": *[_type == "siteSettings"][0] {
-    siteName, siteTagline,
+    siteName, siteTagline, enableProjects,
     logo { asset->{ _id, url, metadata { lqip, dimensions } }, hotspot, crop },
     logoHeight,
     favicon { asset->{ _id, url } },
@@ -91,10 +91,15 @@ export const servicesPageQuery = groq`*[_type == "servicesPage"][0] {
   pageTitle, pageSubtitle, ctaLabel, ctaLink, seo
 }`;
 
-export const projectsPageQuery = groq`*[_type == "projectsPage"][0] {
-  heroTitle, heroSubtitle,
-  heroImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop },
-  pageTitle, pageSubtitle, ctaLabel, ctaLink, seo
+export const projectsPageQuery = groq`{
+  "page": *[_type == "projectsPage"][0] {
+    heroTitle, heroSubtitle,
+    heroImage { asset->{ _id, url, metadata { lqip, dimensions } }, alt, hotspot, crop },
+    pageTitle, pageSubtitle, ctaLabel, ctaLink, seo
+  },
+  "settings": *[_type == "siteSettings"][0] {
+    enableProjects
+  }
 }`;
 
 // ─── Blog ──────────────────────────────────────────────────────────────────────

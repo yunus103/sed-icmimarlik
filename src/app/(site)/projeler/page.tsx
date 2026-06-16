@@ -8,10 +8,16 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import { AnimateGroup } from "@/components/ui/AnimateGroup";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ProjectsPage as ProjectsPageType, Project } from "@/types";
+import { redirect } from "next/navigation";
+import { ProjectsPage as ProjectsPageType, Project, SiteSettings } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const pageData = await client.fetch<ProjectsPageType>(projectsPageQuery, {}, { next: { tags: ["projectsPage"] } });
+  const result = await client.fetch<{ page: ProjectsPageType; settings: SiteSettings }>(
+    projectsPageQuery,
+    {},
+    { next: { tags: ["projectsPage", "layout"] } }
+  );
+  const pageData = result?.page;
   return buildMetadata({
     title: pageData?.heroTitle || pageData?.pageTitle || "Projelerimiz",
     canonicalPath: "/projeler",
@@ -20,10 +26,21 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ProjectsHubPage() {
-  const [projects, pageData] = await Promise.all([
+  const [projects, result] = await Promise.all([
     client.fetch<Project[]>(projectListQuery, {}, { next: { tags: ["projects"] } }),
-    client.fetch<ProjectsPageType>(projectsPageQuery, {}, { next: { tags: ["projectsPage"] } }),
+    client.fetch<{ page: ProjectsPageType; settings: SiteSettings }>(
+      projectsPageQuery,
+      {},
+      { next: { tags: ["projectsPage", "layout"] } }
+    ),
   ]);
+
+  const pageData = result?.page;
+  const settings = result?.settings;
+
+  if (settings?.enableProjects === false) {
+    redirect("/");
+  }
 
   return (
     <div className="flex flex-col gap-0 pb-24 bg-background">

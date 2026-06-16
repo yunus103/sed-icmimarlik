@@ -42,10 +42,17 @@ function resolveHref(item: NavItem): string {
 }
 
 export function Footer({ settings, navigation }: { settings: SiteSettings; navigation: Navigation }) {
-  const footerLinks: NavItem[] = navigation?.footerLinks || [];
+  const footerLinks: NavItem[] = (navigation?.footerLinks || []).filter(
+    item => settings?.enableProjects !== false || resolveHref(item) !== "/projeler"
+  );
   const socialLinks: SocialLink[] = (settings?.socialLinks || []).filter((s: SocialLink) => s.url);
   const contact = settings?.contactInfo;
   const currentYear = new Date().getFullYear();
+
+  const footerLogoAspectRatio = settings?.logo?.asset?.metadata?.dimensions?.aspectRatio;
+  const footerLogoWidthStyles = footerLogoAspectRatio 
+    ? { width: `${6 * footerLogoAspectRatio}rem` } 
+    : { width: "200px" };
 
   return (
     <footer className="bg-[#111111] text-[#F7F5F2] border-t border-[#D6CEC3]/10">
@@ -57,7 +64,7 @@ export function Footer({ settings, navigation }: { settings: SiteSettings; navig
             <Link href="/" className="inline-block group">
               <div
                 className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
-                style={{ height: "6rem", minWidth: "160px", maxWidth: "380px", width: "auto" }}
+                style={{ height: "6rem", minWidth: "160px", maxWidth: "380px", ...footerLogoWidthStyles }}
               >
                 {settings?.logo ? (
                   <SanityImage

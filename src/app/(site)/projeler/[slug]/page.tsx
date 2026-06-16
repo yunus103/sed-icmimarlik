@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { projectBySlugQuery, projectListQuery } from "@/sanity/lib/queries";
 import { buildMetadata } from "@/lib/seo";
@@ -15,6 +15,9 @@ import { JsonLd, projectJsonLd } from "@/components/seo/JsonLd";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
+  const settings = await client.fetch(`*[_type == "siteSettings"][0] { enableProjects }`);
+  if (settings?.enableProjects === false) return [];
+
   const projects = await client.fetch(projectListQuery, {}, { next: { tags: ["projects"] } });
   return (projects || []).map((p: Project) => ({ slug: p.slug?.current }));
 }
@@ -31,6 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProjectPage({ params }: Props) {
+  const settings = await client.fetch(`*[_type == "siteSettings"][0] { enableProjects }`, {}, { next: { tags: ["layout"] } });
+  if (settings?.enableProjects === false) {
+    redirect("/");
+  }
+
   const { slug } = await params;
   const project = await client.fetch(
     projectBySlugQuery,
