@@ -8,6 +8,7 @@ import { SanityImage } from "@/types";
 type PageSeo = {
   metaTitle?: string;
   metaDescription?: string;
+  metaKeywords?: string[];
   ogImage?: SanityImage;
   canonicalUrl?: string;
   noIndex?: boolean;
@@ -52,6 +53,20 @@ export async function buildMetadata(params: BuildMetadataParams = {}): Promise<M
   }
 
   const description = params.pageSeo?.metaDescription || params.description || defaults?.description;
+  const fallbackDescription = "SED İç Mimarlık, 1989 yılından beri İstanbul'da hizmet veren, iç mimari tasarım, proje danışmanlığı ve anahtar teslim uygulama firmasıdır.";
+  const finalDescription = description || fallbackDescription;
+
+  const keywords = params.pageSeo?.metaKeywords || defaults?.keywords || [
+    "sed iç mimarlık",
+    "iç mimarlık",
+    "mimarlık ofisi",
+    "istanbul iç mimarlık",
+    "tasarım",
+    "dekorasyon",
+    "tadilat",
+    "proje danışmanlığı"
+  ];
+
   const ogImageSource = params.pageSeo?.ogImage || params.ogImage || defaults?.ogImage;
   const siteUrl = getSiteUrl();
   const canonicalUrl =
@@ -66,7 +81,8 @@ export async function buildMetadata(params: BuildMetadataParams = {}): Promise<M
 
   return {
     title,
-    description,
+    description: finalDescription,
+    keywords,
     icons: {
       icon: faviconUrl,
       shortcut: faviconUrl,
@@ -76,7 +92,7 @@ export async function buildMetadata(params: BuildMetadataParams = {}): Promise<M
     ...(canonicalUrl && { alternates: { canonical: canonicalUrl } }),
     openGraph: {
       title: title || "",
-      description: description || "",
+      description: finalDescription,
       ...(ogImageUrl && { images: [{ url: ogImageUrl, width: 1200, height: 630 }] }),
       locale: "tr_TR",
       type: "website",
@@ -84,7 +100,7 @@ export async function buildMetadata(params: BuildMetadataParams = {}): Promise<M
     twitter: {
       card: "summary_large_image",
       title: title || "",
-      description: description || "",
+      description: finalDescription,
       ...(ogImageUrl && { images: [ogImageUrl] }),
     },
     verification: {

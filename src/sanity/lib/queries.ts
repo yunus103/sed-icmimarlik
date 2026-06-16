@@ -189,6 +189,7 @@ export const allSlugsForSitemapQuery = groq`{
 export const defaultSeoQuery = groq`*[_type == "siteSettings"][0] {
   "title": defaultSeo.metaTitle,
   "description": defaultSeo.metaDescription,
+  "keywords": defaultSeo.metaKeywords,
   "ogImage": defaultOgImage,
   siteName,
   siteTagline,

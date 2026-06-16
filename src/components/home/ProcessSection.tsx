@@ -1,6 +1,5 @@
 import { FadeIn } from "@/components/ui/FadeIn";
 import { AnimateGroup } from "@/components/ui/AnimateGroup";
-import { motion } from "framer-motion";
 
 interface ProcessStep {
   stepNumber?: string;

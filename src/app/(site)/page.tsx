@@ -16,7 +16,7 @@ import { ProcessSection } from "@/components/home/ProcessSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { BlogSection } from "@/components/home/BlogSection";
 import { CtaSection } from "@/components/home/CtaSection";
-import { HomePage as HomePageType, Service, Project, BlogPost } from "@/types";
+import { HomePage as HomePageType, Service, Project, BlogPost, SiteSettings, Navigation } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await client.fetch<HomePageType>(homePageQuery, {}, { next: { tags: ["home"] } });
@@ -33,7 +33,7 @@ export default async function HomePage() {
     client.fetch<Service[]>(serviceListQuery, {}, { next: { tags: ["services"] } }),
     client.fetch<Project[]>(projectListQuery, {}, { next: { tags: ["projects"] } }),
     client.fetch<BlogPost[]>(blogListQuery, {}, { next: { tags: ["blog"] } }),
-    client.fetch<any>(layoutQuery, {}, { next: { tags: ["layout"] } }),
+    client.fetch<{ settings: SiteSettings; navigation: Navigation }>(layoutQuery, {}, { next: { tags: ["layout"] } }),
   ]);
 
   // Determine which items to display (Sanity references or dynamic fallbacks)

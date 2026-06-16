@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { PageHero } from "@/components/layout/PageHero";
-import { ContactPage as ContactPageType } from "@/types";
+import { ContactPage as ContactPageType, SiteSettings, Navigation } from "@/types";
 import { RiMailLine, RiPhoneLine, RiMapPinLine, RiWhatsappLine } from "react-icons/ri";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ContactPage() {
   const [data, layoutData] = await Promise.all([
     client.fetch<ContactPageType>(contactPageQuery, {}, { next: { tags: ["contact"] } }),
-    client.fetch<any>(layoutQuery, {}, { next: { tags: ["layout"] } }),
+    client.fetch<{ settings: SiteSettings; navigation: Navigation }>(layoutQuery, {}, { next: { tags: ["layout"] } }),
   ]);
 
   const settings = layoutData?.settings;

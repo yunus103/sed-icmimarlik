@@ -73,10 +73,15 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Close mobile menu on navigate (fixed dependency array to prevent immediate close loop bug)
+  // Close mobile menu on navigate
   useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+    if (menuOpen) {
+      const handle = setTimeout(() => {
+        setMenuOpen(false);
+      }, 0);
+      return () => clearTimeout(handle);
+    }
+  }, [pathname, menuOpen]);
 
   // Prevent background scroll when mobile menu is open
   useEffect(() => {

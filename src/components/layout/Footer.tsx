@@ -11,7 +11,6 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 import { RiMailLine, RiPhoneLine, RiMapPinLine } from "react-icons/ri";
 import { SanityImage } from "@/components/ui/SanityImage";
-import { cn } from "@/lib/utils";
 
 import { SiteSettings, Navigation } from "@/types";
 

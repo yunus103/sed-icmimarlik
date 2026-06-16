@@ -3,8 +3,6 @@ import { client } from "@/sanity/lib/client";
 import { allSlugsForSitemapQuery } from "@/sanity/lib/queries";
 import { getSiteUrl } from "@/lib/utils";
 
-import { BlogPost, Service, Project } from "@/types";
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const [data, settings] = await Promise.all([
@@ -25,15 +23,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/hizmetler`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
   ];
 
+  interface SitemapItem {
+    slug: string;
+    _updatedAt?: string;
+  }
+
   const dynamicRoutes: MetadataRoute.Sitemap = [
-    ...(data?.blogPosts?.map((p: BlogPost) => ({
+    ...(data?.blogPosts?.map((p: SitemapItem) => ({
       url: `${base}/${p.slug}`,
       lastModified: new Date(p._updatedAt || new Date()),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })) || []),
 
-    ...(data?.services?.map((p: Service) => ({
+    ...(data?.services?.map((p: SitemapItem) => ({
       url: `${base}/hizmetler/${p.slug}`,
       lastModified: new Date(p._updatedAt || new Date()),
       changeFrequency: "monthly" as const,
@@ -41,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })) || []),
 
     ...(showProjects
-      ? data?.projects?.map((p: Project) => ({
+      ? data?.projects?.map((p: SitemapItem) => ({
           url: `${base}/projeler/${p.slug}`,
           lastModified: new Date(p._updatedAt || new Date()),
           changeFrequency: "monthly" as const,
