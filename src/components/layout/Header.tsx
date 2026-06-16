@@ -75,13 +75,9 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
 
   // Close mobile menu on navigate
   useEffect(() => {
-    if (menuOpen) {
-      const handle = setTimeout(() => {
-        setMenuOpen(false);
-      }, 0);
-      return () => clearTimeout(handle);
-    }
-  }, [pathname, menuOpen]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMenuOpen(false);
+  }, [pathname]);
 
   // Prevent background scroll when mobile menu is open
   useEffect(() => {
