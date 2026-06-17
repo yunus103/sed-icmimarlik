@@ -8,5 +8,5 @@ const config = {
 
 export const client = createClient({ 
   ...config, 
-  useCdn: process.env.NODE_ENV === "production" 
+  useCdn: false 
 });
