@@ -44,7 +44,7 @@ export function PageHero({
             {/* Breadcrumbs */}
             <Breadcrumbs items={breadcrumbs} className={`mb-6 ${backgroundImage?.asset ? "text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white" : ""}`} />
 
-            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 ${backgroundImage?.asset ? "text-white" : "text-foreground"}`}>
+            <h1 className={`text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 ${backgroundImage?.asset ? "text-white" : "text-foreground"}`}>
               {title}
             </h1>
             
