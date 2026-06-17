@@ -112,7 +112,7 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
         : "sticky top-0 bg-background/95 border-b border-border/30 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-foreground"
     )}>
       <div className="container mx-auto flex h-24 items-center justify-between px-6 md:px-12">
-        <Link href="/" className="flex items-center group h-full py-2">
+        <Link href="/" className="flex items-center group h-full py-2" aria-label={settings?.siteName || "Sed İç Mimarlık Ana Sayfa"}>
           <div
             className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
             style={{ height: "4.5rem", minWidth: "120px", maxWidth: "340px", ...logoWidthStyles }}
@@ -170,7 +170,7 @@ export function Header({ settings, navigation }: { settings: SiteSettings; navig
           >
             {/* Top Bar (matches desktop header layout for alignment consistency) */}
             <div className="container mx-auto flex h-24 items-center justify-between px-6">
-              <Link href="/" className="flex items-center group h-full py-2" onClick={() => setMenuOpen(false)}>
+              <Link href="/" className="flex items-center group h-full py-2" onClick={() => setMenuOpen(false)} aria-label={settings?.siteName || "Sed İç Mimarlık Ana Sayfa"}>
                 <div
                   className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
                   style={{ height: "4.5rem", minWidth: "120px", maxWidth: "340px", ...logoWidthStyles }}

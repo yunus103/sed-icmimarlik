@@ -60,7 +60,7 @@ export function Footer({ settings, navigation }: { settings: SiteSettings; navig
 
           {/* Brand & Logo Column (5 Columns) */}
           <div className="md:col-span-5 space-y-6">
-            <Link href="/" className="inline-block group">
+            <Link href="/" className="inline-block group" aria-label={settings?.siteName || "Sed İç Mimarlık Ana Sayfa"}>
               <div
                 className="relative transition-all duration-200 group-hover:scale-[1.01] active:scale-95"
                 style={{ height: "6rem", minWidth: "160px", maxWidth: "380px", ...footerLogoWidthStyles }}

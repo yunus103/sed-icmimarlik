@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function formatDate(dateString: string, locale = "tr-TR"): string {
   return new Date(dateString).toLocaleDateString(locale, {
     year: "numeric", month: "long", day: "numeric",
+    timeZone: "UTC"
   });
 }
 
