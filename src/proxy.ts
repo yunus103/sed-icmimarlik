@@ -25,7 +25,7 @@ export async function proxy(request: NextRequest) {
   
   // 1. Zararlı olabilecek dosya uzantısı isteklerini anında Edge'de abort et
   if (suspiciousExtensions.test(pathname)) {
-    return new NextResponse("Not Found", { status: 404 });
+    return NextResponse.rewrite(new URL("/_not-found", request.url), { status: 404 });
   }
 
   // 2. Api, NextJS iç ve studio isteklerini es geç
@@ -67,7 +67,7 @@ export async function proxy(request: NextRequest) {
         
         // Eğer slug geçerli listede yoksa, Vercel Serverless Function'ı çalıştırmadan anında abort et
         if (!validSlugs.has(targetSlug)) {
-          return new NextResponse("Not Found", { status: 404 });
+          return NextResponse.rewrite(new URL("/_not-found", request.url), { status: 404 });
         }
       }
     } catch (error) {
