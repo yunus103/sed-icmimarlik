@@ -14,9 +14,17 @@ const ipStore = new Map<string, { count: number; resetAt: number }>();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Bellek birikmesini önlemek için inline (istek sırasında) temizlik
+  for (const [storeIp, entry] of ipStore.entries()) {
+    if (now > entry.resetAt) {
+      ipStore.delete(storeIp);
+    }
+  }
+
   const entry = ipStore.get(ip);
 
-  if (!entry || now > entry.resetAt) {
+  if (!entry) {
     // İlk istek veya pencere sıfırlandı
     ipStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
     return false;
@@ -29,15 +37,6 @@ function isRateLimited(ip: string): boolean {
   entry.count += 1;
   return false;
 }
-
-// Bellek sızıntısını önlemek için periyodik temizlik
-// (Instance warm olduğu sürece çalışır, serverless'ta zararsız)
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, entry] of ipStore.entries()) {
-    if (now > entry.resetAt) ipStore.delete(ip);
-  }
-}, RATE_LIMIT_WINDOW_MS);
 
 // ---------------------------------------------------------------------------
 // XSS Koruması — HTML Escape
