@@ -68,6 +68,15 @@ export async function POST(req: Request) {
       console.log(`Revalidated tag: ${itemTag}`);
     }
 
+    // Sadece dinamik rotalara sahip tipler değiştiğinde valid-slugs listesini ve sitemap'i temizle
+    if (_type === "blogPost" || _type === "service" || _type === "project") {
+      revalidateTag("valid-slugs", { expire: 0 });
+      console.log("Revalidated tag: valid-slugs");
+      
+      revalidatePath("/sitemap.xml");
+      console.log("Revalidated path: /sitemap.xml");
+    }
+
     // For layout-level data (navbar, footer, site settings) also revalidate the entire layout path
     if (_type === "siteSettings" || _type === "navigation") {
       revalidatePath("/", "layout");
