@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+﻿import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { serviceBySlugQuery, serviceListQuery } from "@/sanity/lib/queries";
@@ -15,7 +15,6 @@ import { JsonLd, serviceJsonLd } from "@/components/seo/JsonLd";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const services = await client.fetch(serviceListQuery, {}, { next: { tags: ["service:list"] } });
@@ -157,3 +156,4 @@ export default async function ServicePage({ params }: Props) {
     </>
   );
 }
+

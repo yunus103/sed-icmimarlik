@@ -16,7 +16,6 @@ import { BlogPost } from "@/types";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const posts = await client.fetch(blogListQuery, {}, { next: { tags: ["blog:list"] } });
@@ -168,6 +167,7 @@ export default async function BlogPostPage({ params }: Props) {
     </>
   );
 }
+
 
 
 

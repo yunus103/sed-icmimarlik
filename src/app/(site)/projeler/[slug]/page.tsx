@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+﻿import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { projectBySlugQuery, projectListQuery } from "@/sanity/lib/queries";
@@ -14,7 +14,6 @@ import { JsonLd, projectJsonLd } from "@/components/seo/JsonLd";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const settings = await client.fetch(`*[_type == "siteSettings"][0] { enableProjects }`);
@@ -82,3 +81,4 @@ export default async function ProjectPage({ params }: Props) {
     </>
   );
 }
+
