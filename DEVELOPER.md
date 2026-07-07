@@ -101,9 +101,9 @@ const tagMap = {
 | `blogPage` | `blogPage` | `/blog` (Hero, SEO, CTA) |
 | `servicesPage` | `servicesPage` | `/hizmetler` (Hero, SEO, CTA) |
 | `projectsPage` | `projectsPage` | `/projeler` (Hero, SEO, CTA) |
-| `blog` | `blogPost` | `/[slug]` (Blog detay) ve `/blog` (Liste fallback'i) |
-| `services` | `service` | `/hizmetler/[slug]` ve `/hizmetler` (Liste fallback'i) |
-| `projects` | `project` | `/projeler/[slug]` ve `/projeler` (Liste fallback'i) |
+| `blog:list`, `blog:detail:${slug}` | `blogPost` | `/blog/[slug]` (Blog detay) ve `/blog` (Liste) |
+| `service:list`, `service:detail:${slug}` | `service` | `/hizmetler/[slug]` ve `/hizmetler` (Liste) |
+| `project:list`, `project:detail:${slug}` | `project` | `/projeler/[slug]` ve `/projeler` (Liste) |
 
 Webhook'ta `_type` alanı gönderilir, `tagMap` üzerinden ilgili tag bulunur ve `revalidateTag()` çalıştırılır.
 

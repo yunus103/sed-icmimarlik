@@ -17,8 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function BlogListPage() {
   const [posts, categories, pageData] = await Promise.all([
-    client.fetch(blogListQuery, {}, { next: { tags: ["blog"] } }),
-    client.fetch(blogCategoriesQuery, {}, { next: { tags: ["blog"] } }),
+    client.fetch(blogListQuery, {}, { next: { tags: ["blog:list"] } }),
+    client.fetch(blogCategoriesQuery, {}, { next: { tags: ["blog:categories"] } }),
     client.fetch<BlogPageType>(blogPageQuery, {}, { next: { tags: ["blogPage"] } })
   ]);
 

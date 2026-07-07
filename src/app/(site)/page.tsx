@@ -30,9 +30,9 @@ export default async function HomePage() {
   // Fetch home page data, fallbacks, and layout settings in parallel
   const [data, fallbackServices, fallbackProjects, fallbackPosts, layoutData] = await Promise.all([
     client.fetch<HomePageType>(homePageQuery, {}, { next: { tags: ["home"] } }),
-    client.fetch<Service[]>(serviceListQuery, {}, { next: { tags: ["services"] } }),
-    client.fetch<Project[]>(projectListQuery, {}, { next: { tags: ["projects"] } }),
-    client.fetch<BlogPost[]>(blogListQuery, {}, { next: { tags: ["blog"] } }),
+    client.fetch<Service[]>(serviceListQuery, {}, { next: { tags: ["service:list"] } }),
+    client.fetch<Project[]>(projectListQuery, {}, { next: { tags: ["project:list"] } }),
+    client.fetch<BlogPost[]>(blogListQuery, {}, { next: { tags: ["blog:list"] } }),
     client.fetch<{ settings: SiteSettings; navigation: Navigation }>(layoutQuery, {}, { next: { tags: ["layout"] } }),
   ]);
 

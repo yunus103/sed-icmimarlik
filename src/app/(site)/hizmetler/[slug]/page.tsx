@@ -15,14 +15,16 @@ import { JsonLd, serviceJsonLd } from "@/components/seo/JsonLd";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
-  const services = await client.fetch(serviceListQuery, {}, { next: { tags: ["services"] } });
+  const services = await client.fetch(serviceListQuery, {}, { next: { tags: ["service:list"] } });
   return (services || []).map((s: Service) => ({ slug: s.slug?.current }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const service = await client.fetch(serviceBySlugQuery, { slug }, { next: { tags: ["services"] } });
+  const service = await client.fetch(serviceBySlugQuery, { slug }, { next: { tags: [`service:detail:${slug}`] } });
   if (!service) return {};
   return buildMetadata({
     title: service.title,
@@ -36,7 +38,7 @@ export default async function ServicePage({ params }: Props) {
   const service = await client.fetch(
     serviceBySlugQuery,
     { slug },
-    { next: { tags: ["services"] } }
+    { next: { tags: [`service:detail:${slug}`] } }
   );
 
   if (!service) notFound();

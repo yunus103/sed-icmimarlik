@@ -57,7 +57,7 @@ export function articleJsonLd(post?: BlogPost) {
     "@type": "Article",
     headline: post?.title,
     datePublished: post?.publishedAt,
-    url: `${getSiteUrl()}/${post?.slug?.current}`,
+    url: `${getSiteUrl()}/blog/${post?.slug?.current}`,
     ...(post?.mainImage?.asset?.url && { image: [post.mainImage.asset.url] }),
     description: post?.excerpt,
   };

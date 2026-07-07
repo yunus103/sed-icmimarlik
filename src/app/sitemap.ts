@@ -6,8 +6,8 @@ import { getSiteUrl } from "@/lib/utils";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const [data, settings] = await Promise.all([
-    client.fetch(allSlugsForSitemapQuery),
-    client.fetch(`*[_type == "siteSettings"][0] { enableProjects }`),
+    client.fetch(allSlugsForSitemapQuery, {}, { next: { tags: ["sitemap"] } }),
+    client.fetch(`*[_type == "siteSettings"][0] { enableProjects }`, {}, { next: { tags: ["sitemap", "layout"] } }),
   ]);
 
   const showProjects = settings?.enableProjects !== false;
@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const dynamicRoutes: MetadataRoute.Sitemap = [
     ...(data?.blogPosts?.map((p: SitemapItem) => ({
-      url: `${base}/${p.slug}`,
+      url: `${base}/blog/${p.slug}`,
       lastModified: new Date(p._updatedAt || new Date()),
       changeFrequency: "monthly" as const,
       priority: 0.7,

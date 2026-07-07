@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+﻿import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { blogPostBySlugQuery, blogListQuery } from "@/sanity/lib/queries";
@@ -16,20 +16,22 @@ import { BlogPost } from "@/types";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
-  const posts = await client.fetch(blogListQuery, {}, { next: { tags: ["blog"] } });
+  const posts = await client.fetch(blogListQuery, {}, { next: { tags: ["blog:list"] } });
   return (posts || []).map((post: BlogPost) => ({ slug: post.slug?.current }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await client.fetch(blogPostBySlugQuery, { slug }, { next: { tags: ["blog"] } });
+  const post = await client.fetch(blogPostBySlugQuery, { slug }, { next: { tags: [`blog:detail:${slug}`] } });
   if (!post) return {};
   
   const baseSeo = await buildMetadata({
     title: post.title,
     description: post.excerpt,
-    canonicalPath: `/${slug}`,
+    canonicalPath: `/blog/${slug}`,
     pageSeo: post.seo,
   });
 
@@ -45,7 +47,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await client.fetch(
     blogPostBySlugQuery,
     { slug },
-    { next: { tags: ["blog"] } }
+    { next: { tags: [`blog:detail:${slug}`] } }
   );
 
   if (!post) notFound();
@@ -55,7 +57,7 @@ export default async function BlogPostPage({ params }: Props) {
     relatedPosts = await client.fetch(
       blogRelatedPostsQuery,
       { categoryId: post.category._id, currentPostId: post._id },
-      { next: { tags: ["blog"] } }
+      { next: { tags: ["blog:list"] } }
     );
   }
 
@@ -127,7 +129,7 @@ export default async function BlogPostPage({ params }: Props) {
               <h2 className="text-2xl font-bold mb-8 font-bankgothic">İlgili Yazılar</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {relatedPosts.map((rPost: BlogPost) => (
-                  <Link key={rPost.slug?.current} href={`/${rPost.slug?.current}`} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
+                  <Link key={rPost.slug?.current} href={`/blog/${rPost.slug?.current}`} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl">
                     <article className="overflow-hidden h-full flex flex-col">
                       {rPost.mainImage && (
                         <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-muted">
@@ -166,3 +168,6 @@ export default async function BlogPostPage({ params }: Props) {
     </>
   );
 }
+
+
+

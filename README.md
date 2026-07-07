@@ -91,7 +91,7 @@ Tarayıcıda:
 src/
 ├── app/
 │   ├── (site)/           # Kullanıcıya görünen tüm sayfalar
-│   │   ├── [slug]/       # Dinamik blog detay sayfaları
+│   │   ├── blog/[slug]/  # Dinamik blog detay sayfaları
 │   │   ├── page.tsx      # Ana sayfa
 │   │   ├── blog/         # Blog listesi hub sayfası
 │   │   ├── hizmetler/    # Hizmet hub ve [slug] detay sayfaları
@@ -136,6 +136,5 @@ Aşağıdaki zengin arama sonuçları şemaları kod yazmaya gerek kalmadan tama
 *   **Site-wide Organization & WebSite:** Root Layout'ta `siteSettings`'ten gelen logo, iletişim ve sosyal ağ verileriyle otomatik oluşturulur.
 *   **Ekmek Kırıntıları (Breadcrumbs):** İç sayfalarda `<Breadcrumbs>` bileşeni çağrıldığı anda dinamik URL hiyerarşisi üzerinden `BreadcrumbList` şemasını oluşturup sayfaya enjekte eder.
 *   **Taranabilir Sıkça Sorulan Sorular (FAQ):** `<FAQ>` bileşeni kullanıldığında, arama botlarının kapalı cevapları da %100 okuyabilmesi için answers DOM'da saklanır ve `FAQPage` şeması dinamik olarak sayfaya basılır.
-*   **Blog Yazıları:** `[slug]/page.tsx` rotasında dinamik `Article` şeması otomatik olarak basılır.
+*   **Blog Yazıları:** `blog/[slug]/page.tsx` rotasında dinamik `Article` şeması otomatik olarak basılır.
 *   **Hizmet & Projeler:** İlgili detay sayfalarında `Service` ve `CreativeWork` şemaları otomatik olarak yer alır.
-

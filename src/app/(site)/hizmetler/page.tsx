@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ServicesHubPage() {
   const [services, pageData] = await Promise.all([
-    client.fetch<Service[]>(serviceListQuery, {}, { next: { tags: ["services"] } }),
+    client.fetch<Service[]>(serviceListQuery, {}, { next: { tags: ["service:list"] } }),
     client.fetch<ServicesPageType>(servicesPageQuery, {}, { next: { tags: ["servicesPage"] } }),
   ]);
 

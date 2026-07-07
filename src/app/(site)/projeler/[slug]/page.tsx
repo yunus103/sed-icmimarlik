@@ -14,17 +14,19 @@ import { JsonLd, projectJsonLd } from "@/components/seo/JsonLd";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const settings = await client.fetch(`*[_type == "siteSettings"][0] { enableProjects }`);
   if (settings?.enableProjects === false) return [];
 
-  const projects = await client.fetch(projectListQuery, {}, { next: { tags: ["projects"] } });
+  const projects = await client.fetch(projectListQuery, {}, { next: { tags: ["project:list"] } });
   return (projects || []).map((p: Project) => ({ slug: p.slug?.current }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = await client.fetch(projectBySlugQuery, { slug }, { next: { tags: ["projects"] } });
+  const project = await client.fetch(projectBySlugQuery, { slug }, { next: { tags: [`project:detail:${slug}`] } });
   if (!project) return {};
   return buildMetadata({
     title: project.title,
@@ -43,7 +45,7 @@ export default async function ProjectPage({ params }: Props) {
   const project = await client.fetch(
     projectBySlugQuery,
     { slug },
-    { next: { tags: ["projects"] } }
+    { next: { tags: [`project:detail:${slug}`] } }
   );
 
   if (!project) notFound();
